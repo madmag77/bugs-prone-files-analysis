@@ -6,6 +6,7 @@ project_path = sys.argv[1]
 
 files_dict = {}
 bugs = {}
+authors = {}
 key = 'M\t'
 number_of_top_changeable_files = 500
 output_file = 'files.csv'
@@ -22,16 +23,22 @@ for line in commit_history:
     if ' bug' in line.lower():
         is_bug = True
 
+    if 'Author: ' in line:
+        author = line.split('Author:')[1]
+
     if key in line and ('.dart' in line or '.java' in line or '.swift' in line):
         filename = line.split(key)[1]
         files_dict[filename] = files_dict.get(filename, 0) + 1
         if is_bug:
             bugs[filename] = bugs.get(filename, 0) + 1
+        if filename not in authors:
+            authors[filename] = set()
+        authors[filename].add(author)
 
 files = []
 
 for k, v in files_dict.items():
-    files.append((k, v, bugs.get(k, 0)))
+    files.append((k, v, bugs.get(k, 0), len(authors[k])))
 
 files.sort(key=lambda x: -x[1])
 
@@ -49,8 +56,8 @@ sizes.sort()
 median = sizes[int(len(sizes)/2)]
 
 with open(output_file, 'w') as file:
-    headers = 'file name, commits count, bugs count, file size, median, xTimes bigger than median, ' \
-              'metric = commits*bugs*bigger_than_median\n'
+    headers = 'file name, commits count, bugs count, authors, file size, median, xTimes bigger than median, ' \
+              'metric = commits*(bugs + 1)*bigger_than_median\n'
     file.write(headers)
     for i, file_metrics in enumerate(files):
         try:
@@ -59,8 +66,9 @@ with open(output_file, 'w') as file:
             file_size = 0
         if i < number_of_top_changeable_files:
             bigger_than_median = file_size/median
-            metric = file_metrics[1]*file_metrics[2]*bigger_than_median
-            output_line = f'{file_metrics[0]}, {file_metrics[1]}, {file_metrics[2]}, {file_size}, {median}, ' \
+            metric = file_metrics[1]*(file_metrics[2] + 1)*bigger_than_median
+            output_line = f'{file_metrics[0]}, {file_metrics[1]}, {file_metrics[2]}, {file_metrics[3]}, {file_size}, ' \
+                          f'{median}, ' \
                           f'{bigger_than_median}, {metric}'
             file.write(output_line + '\n')
             print(output_line)
