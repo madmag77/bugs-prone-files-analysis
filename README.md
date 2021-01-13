@@ -2,7 +2,7 @@
 
 
 ## What is it?
-The purpose of this code is to find `hot` files in your repository. `Hot` file means that in this file there is a high probability to have a bug. 
+The purpose of this code is to find `hot` files in your repository. `Hot` file means that in this file there is a high probability to meet a bug. 
 What are the attributes that make those files `hot`?
 * Big files. The bigger your file the more it errors prone because it most likely has many reasons to be changed and the logic inside is complex as it wasn't split. 
 * Frequenlty changing files. Again, why these files are begin changed often? probably because they have a way many responsibilities or/and bugs that are being fixed.
