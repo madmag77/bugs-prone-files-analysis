@@ -4,9 +4,9 @@
 ## What is it?
 The purpose of this code is to find `hot` files in your repository. `Hot` file means that in this file there is a high probability to meet a bug. 
 What are the attributes that make those files `hot`?
-* Big files. The bigger your file the more it errors prone because it most likely has many reasons to be changed and the logic inside is complex as it wasn't split. 
-* Frequenlty changing files. Again, why these files are begin changed often? probably because they have a way many responsibilities or/and bugs that are being fixed.
-* Files with many authors. The more people touch the file the more probability they introduce a bug (sure thing it's not always the case but still worth to check) 
+* **Big file*s*. The bigger your file the more it errors prone because it most likely has many reasons to be changed and the logic inside is complex as it wasn't split. 
+* **Frequenlty changing files**. Again, why these files are begin changed often? probably because they have a way many responsibilities or/and bugs that are being fixed.
+* **Files with many authors**. The more people touch the file the more probability they introduce a bug (sure thing it's not always the case but still worth to check) 
 
 So this script checks all the commits to your repo for 1 year and calculates the `hot` metric. The bigger the metric the more suspicios, `hot`, error-prone the file.
 
